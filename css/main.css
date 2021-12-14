@@ -1,0 +1,24 @@
+.micbalance{
+	font-size: 15px;
+	color: #0000FF;
+	font-weight: bolder;
+	padding: 5px;
+}
+.mic-lic-area{
+	height: 100px;
+}
+.mic-list-item{
+	font-size: 15px;
+	color: #0000FF;
+	font-weight: bolder;
+	padding: 3px;
+}
+.mic-list-item-img{
+	padding-right: 3px;
+}
+.clearLeftMargin{
+	margin-left: 10px !important;
+}
+.layui-form-switch{
+	vertical-align: unset !important;
+}
