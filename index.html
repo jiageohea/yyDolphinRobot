@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>jiageohea全自动机器设备</title>
+		<link rel='stylesheet' href='layui/css/layui.css'/>
+		<link rel='stylesheet' href='css/main.css'/>
+	</head>
+	<body style="width: 760px;height: 300px;background-color: #777777;">
+		<div class="layui-tab" lay-filter="tabDemo">
+			<ul class="layui-tab-title">
+				<li  lay-id='1' id='mic_app'>麦序管理</li>
+				<li class="layui-this" lay-id='2'>广告牌管理</li>
+				<li lay-id='3'>马甲管理</li>
+				<li lay-id='4'>用户管理</li>
+				<li lay-id='5'>消息管理</li>
+				<li lay-id='6'>私密房间</li>
+				<li lay-id='7'>系统设置</li>
+			</ul>
+			<div class="layui-tab-content">
+				<div class="layui-tab-item" title="麦序管理">
+					<div class="layui-card">
+						<div class="layui-card-header">
+							<span>麦序列表</span>
+							<span>首麦剩余</span><span id='mic_balance' class="micbalance">900</span><span>秒</span>
+							<button class="layui-btn layui-btn-sm" onclick="onMicLong()" id="mic_long">控麦</button>
+							<button class="layui-btn layui-btn-sm" onclick="onMicStop()" id="mic_stop">禁麦</button>
+							<button class="layui-btn layui-btn-sm layui-btn-normal" onclick="onMicTimeAdd(1)">加倍</button>
+							<button class="layui-btn layui-btn-sm layui-btn-normal" onclick="onMicTimeAdd(999)">加满</button>
+							<button class="layui-btn layui-btn-sm layui-btn-disable" onclick="onMicNotification()" id="mic_notification">发麦提</button>
+							<button class="layui-btn layui-btn-sm layui-btn-danger layui-btn-disable" onclick="onMicListClear()" id="mic_clear">清麦</button>
+							<span class="layui-form">
+								<span class="layui-form-item">
+									<span class="layui-input-block clearLeftMargin">
+										<input type="checkbox" checked id="micLockSwitch" lay-filter="micLockSwitch" lay-skin="switch" lay-text="锁麦|忽略"/>
+										<input type="checkbox" checked id="channelModeLockSwitch" lay-filter="channelModeLockSwitch" lay-skin="switch" lay-text="锁厅|忽略"/>
+									</span>
+								</span>
+							</span>
+						</div>
+						<div class="layui-card-body">
+							<ul class="mic-lic-area" id="mic-list-area-id">
+								<li>
+									<button class="layui-btn layui-btn-sm layui-btn-normal">连</button>
+									<button class="layui-btn layui-btn-sm layui-btn-normal">顶</button>
+									<button class="layui-btn layui-btn-sm layui-btn-normal">上</button>
+									<button class="layui-btn layui-btn-sm layui-btn-normal">下</button>
+									<button class="layui-btn layui-btn-sm layui-btn-danger">踢</button>
+									<span class="mic-list-item">1.</span>
+									<img src='images/sound_on.gif' class="mic-list-item-img" id="user-mic-state"/>
+									<img src="images/vp_m.png" class="mic-list-item-img"><a href="javascript:onChatToUser(450929424)">时稚麦</a>
+								</li>
+							</ul>
+							<hr>
+							<!-- <div class="layui-collapse" lay-filter="micColl">
+								<div class="layui-colla-item">
+									<h2 class="layui-colla-title">麦序历史记录</h2>
+									<div class="layui-colla-content">
+										<table class="layui-table" id="mic_history_db"/>
+									</div>
+								</div>
+							</div> -->
+						</div>
+					</div>
+				</div>
+				<div class="layui-tab-item layui-show" title="广告牌管理">
+					<table class="layui-table" id="ad_user_rule_db"/>
+				</div>
+				<div class="layui-tab-item" title="马甲管理">33</div>
+				<div class="layui-tab-item" title="用户管理">5</div>
+				<div class="layui-tab-item" title="消息管理">8</div>
+				<div class="layui-tab-item" title="私密房间">999</div>
+				<div class="layui-tab-item" title="系统设置">999</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/html" id="tableIndex">{{d.LAY_INDEX}}</script>
+	<script type="text/html" id="tableChannelInfo"><a href="javascript:onJumpToChannel({{d.channel_subid}})" style="color:#ff0000">{{d.channel_name}}</a></script>
+	<script type="text/html" id="tableUserInfo">
+		<img src='images/{{d.user_role}}.png'/><a href="javascript:onChatToUser({{d.user_uid}})">{{d.user_name}}</a>
+	</script>
+	<script type="text/html" id="tableTimeToMin">
+		{{# var total = d.mic_total <= 3600 ? (d.mic_total/60).toFixed(0) : (d.mic_total/3600).toFixed(2)}}
+		{{# var unit = d.mic_total <= 3600 ? '分钟' : '小时'}}
+		<span>{{total+unit}}</span>
+	</script>
+	<script type="text/html" id="tablePlayMusic">
+		{{# var text = d.has_record ? '<span style="color:#FFB800;">已录</span>' : '<span style="color:#C0C4CC;">失败</span>'}}
+		<a href="javascript:onPlayMusic({{d.record_path}})">{{text}}</a>
+	</script>
+	<script type="text/html" id="commonStatus">
+		<span>{{d.status ? '开启':'关闭'}}</span>
+	</script>
+	<script type="text/html" id="adTypeFormat">
+		<!-- 0-麦序 1-列表 -->
+		<span>{{d.status ? '列表':'麦序'}}</span>
+	</script>
+	<script type="text/html" id="adMethodFormat">
+		<!-- 0-买断 1-轮播 停留时间秒数5秒 -->
+		{{# var text = d.method ? '轮播':'买断'}}
+		{{# var text = !d.method ?? '每' + d.mtime+'秒'+text}}
+		<span>{{d.status ? '列表':'麦序'}}</span>
+	</script>
+	<script type="text/html" id="adRuleBar">
+		<button class="layui-btn layui-btn-sm" lay-event="add">增加</button>
+		<button class="layui-btn layui-btn-sm" lay-event="modify">修改</button>
+	</script>
+	<script src="layui/layui.js"></script>
+	<script src="yyapi/yyapi.js"></script>
+	<script src="js/jquery-1.7.2.min.js"></script>
+	<script src="js/common.js"></script>
+	<script src="js/micHandler.js"></script>
+	<script type="text/javascript">
+		//初始化所有APP
+		initApp();
+		layui.use(['table','element','form'],function(){
+			var table = layui.table,
+				element = layui.element,
+				form = layui.form;
+			console.log(window.autoSetMicList);
+			console.log(window.micModeLock);
+			form.on('switch(micLockSwitch)',function(data){
+				window.autoSetMicList = data.elem.checked;
+				console.log(window.autoSetMicList);
+			});
+			form.on('switch(channelModeLockSwitch)',function(data){
+				window.micModeLock = data.elem.checked;
+				console.log(window.micModeLock);
+			});
+			table.render({
+				elem:'#mic_history_db',
+				title:'麦序历史记录表',
+				url:'json/micHistory.json',
+				height:200,
+				cols:[[
+					{field:'id',title:'序号',width:60,align:'center',templet:'#tableIndex'},
+					{field:'channel_name',title:'频道名称',align:'center',minWidth:'150',templet:'#tableChannelInfo'},
+					{field:'user_uid',title:'用户UID',width:100,align:'center',hide:true},
+					{field:'user_name',title:'用户名',width:120,align:'center',templet:'#tableUserInfo'},
+					{field:'join_mic',title:'上麦时间',width:120,align:'center',templet:'#tableTimeFormat'},
+					{field:'leave_mic',title:'下麦时间',width:100,align:'center',hide:true,templet:'#tableTimeFormat'},
+					{field:'mic_total',title:'演出时长',width:90,align:'center',templet:'#tableTimeToMin'},
+					{field:'has_record',title:'录音',width:60,align:'center',templet:'#tablePlayMusic'}
+				]]
+			});
+			table.render({
+				elem:'#ad_user_rule_db',
+				title:'广告牌规则表',
+				toolbar:'#adRuleBar'
+				url:'json/adRule.json',
+				cols:[[
+					{field:'id',title:'序号',width:60,align:'center',templet:'#tableIndex'},
+					{field:'total',title:'用户数',width:90,align:'center'},
+					{field:'content',title:'广告内容',width:120,align:'left'},
+					{field:'channel_name',title:'频道名称',align:'center',minWidth:'150',templet:'#tableChannelInfo'},
+					{field:'type',title:'展示方式',width:120,align:'center',templet:'#adTypeFormat'},
+					{field:'status',title:'状态',width:120,align:'center',templet:'#commonStatus'},
+					{field:'method',title:'类型',width:120,align:'center',templet:'#adMethodFormat'},
+					{field:'start',title:'开始时间',width:120,align:'center'},
+					{field:'end',title:'结束时间',width:120,align:'center'},
+				]]
+			})
+		});
+	</script>
+</html>
