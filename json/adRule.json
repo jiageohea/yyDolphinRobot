@@ -1,0 +1,11 @@
+{
+	"code":0,
+	"total":1,
+	"data":[
+		{"total":4,"status":0,"type":0,"content":"kkkk","start":192352,"end":192523,"channel_name":"test","channel_subid":0,"user":[{"pos":0,"uid":123,"name":"张三","role":"3332"}]},
+		{"total":4,"status":0,"type":0,"content":"kkkk","start":192352,"end":192523,"channel_name":"test","channel_subid":0,"user":[{"pos":0,"uid":123,"name":"张三","role":"3332"}]},
+		{"total":4,"status":0,"type":0,"content":"kkkk","start":192352,"end":192523,"channel_name":"test","channel_subid":0,"user":[{"pos":0,"uid":123,"name":"张三","role":"3332"}]},
+		{"total":4,"status":0,"type":0,"content":"kkkk","start":192352,"end":192523,"channel_name":"test","channel_subid":0,"user":[{"pos":0,"uid":123,"name":"张三","role":"3332"}]},
+		{"total":4,"status":0,"type":0,"content":"kkkk","start":192352,"end":192523,"channel_name":"test","channel_subid":0,"user":[{"pos":0,"uid":123,"name":"张三","role":"3332"}]}
+	]
+}
