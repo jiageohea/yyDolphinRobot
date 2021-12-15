@@ -170,11 +170,11 @@ function onUserClear(eventData)
 {
 	if(autoSetMicList){
 		//自动恢复麦序
-		micList.forEach(item=>{
+		micList.forEach(function(item){
 			pushUserToMic(item);
 		});
 		//自动恢复连麦
-		linkMicList.forEach(item=>{
+		linkMicList.forEach(function(item){
 			setUserLink(item);
 		});
 	}
