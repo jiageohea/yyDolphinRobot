@@ -321,7 +321,7 @@ function drawMicListView()
 	//绘制麦序列表数据
 	var html = '';
 	var index = 0;
-	micList.forEach(uid=>{
+	micList.forEach(function(uid){
 		var user = getOneUserInfo(uid);
 		index++;
 		html += '<li>'
